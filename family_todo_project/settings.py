@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     # Third Party
 
     # Local
-    'users'
+    'users',
+    'todo_lists',
+    'todo_items'
 ]
 
 MIDDLEWARE = [
