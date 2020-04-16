@@ -10,6 +10,8 @@ autopep8 = "*"
 [packages]
 django = "*"
 django-environ = "*"
+django-cors-headers = "*"
+django-graphql-jwt = "*"
 
 [requires]
 python_version = "3.7"

@@ -30,9 +30,6 @@ class Query(graphene.ObjectType):
     @login_required
     def resolve_me(self, info):
         user = info.context.user
-        # if user.is_anonymous:
-        #     raise GraphQLError("Not logged in")
-        # else:
         return user
 
     @superuser_required
@@ -51,7 +48,6 @@ class CreateUser(graphene.Mutation):
         password = graphene.String(required=True)
         is_staff = graphene.Boolean()
 
-    @superuser_required
     def mutate(self, info, username, email, password, is_staff=False):
         user = CustomUser(username=username, email=email, is_staff=is_staff)
         user.set_password(password)
