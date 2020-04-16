@@ -5,11 +5,14 @@ from graphql import GraphQLError
 from graphql_jwt.decorators import login_required, superuser_required
 
 from .models import TodoItem
+from todo_lists.models import TodoList
 
 # Queries
 
 
 class TodoItemType(DjangoObjectType):
+    is_completed = graphene.Boolean()
+
     class Meta:
         model = TodoItem
 
@@ -35,14 +38,21 @@ class CreateTodoItem(graphene.Mutation):
 
     class Arguments:
         item_name = graphene.String(required=True)
+        todo_list_id = graphene.Int(required=True)
         item_worth = graphene.Int()
 
     @login_required
-    def mutate(self, info, item_name, item_worth=1):
+    def mutate(self, info, item_name, todo_list_id, item_worth=1):
         user = info.context.user
         if user.is_anonymous:
             raise GraphQLError("Login to create a Todo Item.")
-        todo_item = TodoItem(item_name=item_name,
+
+        try:
+            todo_list = TodoList.objects.get(id=todo_list_id)
+        except:
+            GraphQLError("Must specify a TodoList ID.")
+
+        todo_item = TodoItem(item_name=item_name, todo_list=todo_list,
                              created_by=user, item_worth=item_worth)
         todo_item.save()
         return CreateTodoItem(todo_item=todo_item)
@@ -54,10 +64,11 @@ class UpdateTodoItem(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         title = graphene.String()
+        todo_list_id = graphene.Int()
         item_worth = graphene.Int()
 
     @login_required
-    def mutate(self, info, id, title=None, item_worth=None):
+    def mutate(self, info, id, title=None, todo_list_id=None, item_worth=None):
         try:
             todo_item = TodoItem.objects.get(id=id)
         except:
@@ -69,6 +80,11 @@ class UpdateTodoItem(graphene.Mutation):
 
         if title:
             todo_item.title = title
+        if todo_list_id:
+            try:
+                todo_list = TodoList.objects.get(id=todo_list_id)
+            except:
+                GraphQLError(f"{todo_list_id} is not a valid Todo List ID.")
         if item_worth:
             todo_item.item_worth = item_worth
 

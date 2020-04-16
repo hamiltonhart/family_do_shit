@@ -15,8 +15,15 @@ class TodoItem(models.Model):
         get_user_model(), on_delete=models.CASCADE, related_name="created_items")
     created_date = models.DateField(default=datetime.date.today)
     completed_by = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="completed_items")
-    completed_date = models.DateField()
+        get_user_model(), on_delete=models.CASCADE, related_name="completed_items", null=True)
+    completed_date = models.DateField(null=True)
 
     def __str__(self):
         return self.item_name
+
+    @property
+    def is_completed(self):
+        if not self.completed_by and not self.completed_date:
+            return False
+        else:
+            return True
