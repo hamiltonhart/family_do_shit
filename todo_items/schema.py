@@ -63,12 +63,12 @@ class UpdateTodoItem(graphene.Mutation):
 
     class Arguments:
         id = graphene.Int(required=True)
-        title = graphene.String()
+        item_name = graphene.String()
         todo_list_id = graphene.Int()
         item_worth = graphene.Int()
 
     @login_required
-    def mutate(self, info, id, title=None, todo_list_id=None, item_worth=None):
+    def mutate(self, info, id, item_name=None, todo_list_id=None, item_worth=None):
         try:
             todo_item = TodoItem.objects.get(id=id)
         except:
@@ -78,8 +78,8 @@ class UpdateTodoItem(graphene.Mutation):
         if user.is_anonymous:
             raise GraphQLError("Must be logged in to edit a Todo Item.")
 
-        if title:
-            todo_item.title = title
+        if item_name:
+            todo_item.item_name = item_name
         if todo_list_id:
             try:
                 todo_list = TodoList.objects.get(id=todo_list_id)
@@ -132,7 +132,7 @@ class MarkTodoItemCompleteIncomplete(graphene.Mutation):
             todo_item.completed_date = None
         elif not todo_item.completed_by and not todo_item.completed_date:
             todo_item.completed_by = user
-            todo_item.completed_date = datetime.date.today
+            todo_item.completed_date = datetime.date.today()
 
         todo_item.save()
         return MarkTodoItemCompleteIncomplete(todo_item=todo_item)
