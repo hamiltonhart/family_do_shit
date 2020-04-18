@@ -2,12 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import { Login } from "./components/Auth/Login";
+import { PrimaryLayout } from "./components/Global";
 import * as serviceWorker from "./serviceWorker";
 
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./styling/theme";
 
-import { ApolloProvider } from "@apollo/react-hooks";
+import { useQuery, ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient, { gql } from "apollo-boost";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
@@ -42,10 +44,25 @@ export const IS_LOGGED_IN = gql`
   }
 `;
 
+const InitialLogin = () => {
+  const { data } = useQuery(IS_LOGGED_IN);
+  return (
+    <>
+      {data && data.isLoggedIn ? (
+        <App />
+      ) : (
+        <PrimaryLayout>
+          <Login />
+        </PrimaryLayout>
+      )}
+    </>
+  );
+};
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      <App />
+      <InitialLogin />
     </ThemeProvider>
   </ApolloProvider>,
 
