@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-import { makeStyles, Paper, Typography } from "@material-ui/core";
+import { makeStyles, Paper, Typography, IconButton } from "@material-ui/core";
+
+import { MenuItems } from "../Navigation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,15 +15,20 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 0,
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     borderRadius: 0,
+    backgroundColor: theme.palette.primary.main,
   },
   heading: {
     display: "block",
+    color: theme.palette.common.white,
   },
   childrenDiv: {
     marginTop: theme.spacing(4),
@@ -38,12 +45,12 @@ export const PrimaryLayout = (props) => {
           <Typography
             className={classes.heading}
             variant="h4"
-            color="primary"
             component={Link}
             to="/"
           >
             Do Shit
           </Typography>
+          <MenuItems />
         </Paper>
         <div className={classes.childrenDiv}>{props.children}</div>
       </Paper>

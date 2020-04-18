@@ -47,9 +47,11 @@ class CreateUser(graphene.Mutation):
         email = graphene.String(required=True)
         password = graphene.String(required=True)
         is_staff = graphene.Boolean()
+        is_superuser = graphene.Boolean()
 
-    def mutate(self, info, username, email, password, is_staff=False):
-        user = CustomUser(username=username, email=email, is_staff=is_staff)
+    def mutate(self, info, username, email, password, is_staff=False, is_superuser=False):
+        user = CustomUser(username=username, email=email,
+                          is_staff=is_staff, is_superuser=is_superuser)
         user.set_password(password)
         user.save()
         return CreateUser(user=user)
@@ -64,9 +66,10 @@ class UpdateUser(graphene.Mutation):
         password = graphene.String()
         email = graphene.String()
         is_staff = graphene.Boolean()
+        is_superuser = graphene.Boolean()
 
     @login_required
-    def mutate(self, info, id, username=None, password=None, email=None, is_staff=None):
+    def mutate(self, info, id, username=None, password=None, email=None, is_staff=None, is_superuser=False):
         try:
             user = CustomUser.objects.get(id=id)
         except:
@@ -83,6 +86,8 @@ class UpdateUser(graphene.Mutation):
                 user.email = email
             if is_staff != None:
                 user.is_staff = is_staff
+            if is_superuser != None:
+                user.is_superuser = is_superuser
 
             user.save()
             return UpdateUser(user=user)
