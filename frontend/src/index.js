@@ -15,7 +15,8 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 const cache = new InMemoryCache();
 
-const uri = "http://localhost:8000/graphql/";
+// const uri = "http://localhost:8000/graphql/";
+const uri = "https://do-shit.herokuapp.com/graphql/";
 
 export const client = new ApolloClient({
   cache,
