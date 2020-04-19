@@ -1,6 +1,8 @@
 import React from "react";
 
-import { makeStyles, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+
+import { AdminCreateUser } from "./AdminCreateUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,9 +16,7 @@ export const ManageUsersHeading = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Button color="primary" variant="contained">
-        Add User
-      </Button>
+      <AdminCreateUser />
     </div>
   );
 };

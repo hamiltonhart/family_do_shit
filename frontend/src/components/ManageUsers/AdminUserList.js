@@ -17,7 +17,7 @@ import {
   TableCell,
 } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
-import ClearIcon from "@material-ui/icons/Clear";
+import RemoveIcon from "@material-ui/icons/Remove";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     maxWidth: "100%",
+    marginTop: theme.spacing(2),
     "& th": {
       fontWeight: "600",
     },
@@ -78,7 +79,7 @@ export const AdminUserList = () => {
                   </TableCell>
                   <TableCell align="right">{user.email}</TableCell>
                   <TableCell align="right">
-                    {user.isSuperuser ? <CheckIcon /> : <ClearIcon />}
+                    {user.isSuperuser ? <CheckIcon /> : <RemoveIcon />}
                   </TableCell>
                 </TableRow>
               ))}
