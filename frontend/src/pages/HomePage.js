@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
   },
-  username: {
-    fontWeight: 600,
-  },
 }));
 
 export const HomePage = () => {
@@ -28,12 +25,7 @@ export const HomePage = () => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Typography
-        className={classes.username}
-        variant="h4"
-        align="center"
-        gutterBottom
-      >
+      <Typography variant="h4" align="center" gutterBottom>
         {userContext.username}
       </Typography>
       {loading && <Loading />}

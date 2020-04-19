@@ -2,7 +2,13 @@ import React from "react";
 import "./App.css";
 
 import { Router } from "@reach/router";
-import { HomePage, TodoListDetailPage, LoginPage } from "./pages";
+import {
+  HomePage,
+  TodoListDetailPage,
+  LoginPage,
+  ProfilePage,
+  ManageUsersPage,
+} from "./pages";
 
 import { useQuery } from "@apollo/react-hooks";
 import { ME_QUERY } from "./gql";
@@ -31,7 +37,9 @@ function App() {
         <Router>
           <HomePage path="/" />
           <LoginPage path="login/" />
+          <ProfilePage path="profile/" />
           <TodoListDetailPage path="todolist/:id/" />
+          <ManageUsersPage path="manageusers/" />
         </Router>
       </PrimaryLayout>
     </CurrentUserContext.Provider>

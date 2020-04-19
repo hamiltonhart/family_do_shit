@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-import { makeStyles, Paper, Typography, IconButton } from "@material-ui/core";
+import { makeStyles, Paper, Typography } from "@material-ui/core";
 
 import { MenuItems } from "../Navigation";
 
