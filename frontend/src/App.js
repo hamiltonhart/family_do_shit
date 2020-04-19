@@ -13,7 +13,7 @@ import {
 import { useQuery } from "@apollo/react-hooks";
 import { ME_QUERY } from "./gql";
 
-import { PrimaryLayout } from "./components/Global";
+import { PrimaryLayout, Loading, Error } from "./components/Global";
 
 export const CurrentUserContext = React.createContext();
 
@@ -34,6 +34,8 @@ function App() {
   return (
     <CurrentUserContext.Provider value={userContext}>
       <PrimaryLayout>
+        {loading && <Loading />}
+        {error && <Error errorMessage={error.message} />}
         <Router>
           <HomePage path="/" />
           <LoginPage path="login/" />
