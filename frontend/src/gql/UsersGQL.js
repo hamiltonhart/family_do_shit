@@ -26,6 +26,19 @@ export const GET_USERS = gql`
   }
 `;
 
+export const GET_USER = gql`
+  query($id: Int!) {
+    user(id: $id) {
+      id
+      username
+      email
+      isStaff
+      isSuperuser
+      isActive
+    }
+  }
+`;
+
 // Mutations
 
 export const CREATE_USER = gql`
@@ -44,6 +57,7 @@ export const CREATE_USER = gql`
       isSuperuser: $isSuperuser
     ) {
       user {
+        id
         username
         email
         isStaff
@@ -57,9 +71,9 @@ export const CREATE_USER = gql`
 export const UPDATE_USER = gql`
   mutation(
     $id: Int!
-    $username: String!
-    $email: String!
-    $password: String!
+    $username: String
+    $email: String
+    $password: String
     $isStaff: Boolean
     $isSuperuser: Boolean
   ) {
@@ -72,6 +86,7 @@ export const UPDATE_USER = gql`
       isSuperuser: $isSuperuser
     ) {
       user {
+        id
         username
         email
         isStaff

@@ -39,7 +39,7 @@ export const AdminUserItem = ({ user }) => {
           {user.isSuperuser ? <CheckIcon /> : <RemoveIcon />}
         </TableCell>
       </TableRow>
-      {isShowing && <AdminUserDetailModal toggle={toggle} user={user} />}
+      {isShowing && <AdminUserDetailModal toggle={toggle} userId={user.id} />}
     </>
   );
 };
