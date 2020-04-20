@@ -5,6 +5,7 @@ import { GET_USERS } from "../../gql";
 
 import { Loading, Error } from "../Global";
 import { ManageUsersHeading } from "./ManageUsersHeading";
+import { AdminUserItem } from "./AdminUserItem";
 
 import {
   makeStyles,
@@ -16,8 +17,6 @@ import {
   TableBody,
   TableCell,
 } from "@material-ui/core";
-import CheckIcon from "@material-ui/icons/Check";
-import RemoveIcon from "@material-ui/icons/Remove";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,34 +57,24 @@ export const AdminUserList = () => {
       {loading && <Loading />}
       {error && <Error errorMessage={error.message} />}
       {data && (
-        <TableContainer className={classes.table} component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell align="right">Email</TableCell>
-                <TableCell align="right">Admin</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className={classes.tableBody}>
-              {data.users.map((user) => (
-                <TableRow
-                  key={user.id}
-                  className={user.isActive ? "" : classes.inactiveUser}
-                  onClick={() => console.log(`${user.username} clicked`)}
-                >
-                  <TableCell component="th" scope="row">
-                    {user.username}
-                  </TableCell>
-                  <TableCell align="right">{user.email}</TableCell>
-                  <TableCell align="right">
-                    {user.isSuperuser ? <CheckIcon /> : <RemoveIcon />}
-                  </TableCell>
+        <>
+          <TableContainer className={classes.table} component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Username</TableCell>
+                  <TableCell align="right">Email</TableCell>
+                  <TableCell align="right">Admin</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody className={classes.tableBody}>
+                {data.users.map((user) => (
+                  <AdminUserItem key={user.id} user={user} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
     </div>
   );

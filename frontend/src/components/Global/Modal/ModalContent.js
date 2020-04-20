@@ -6,7 +6,7 @@ import CloseIcon from "@material-ui/icons/Close";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "800px",
-    minWidth: "200px",
+    minWidth: "300px",
     paddingTop: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingBottom: theme.spacing(4),
