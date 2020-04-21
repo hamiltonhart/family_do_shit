@@ -57,6 +57,7 @@ export const AdminCreateUser = () => {
       <Button color="primary" variant="contained" onClick={toggle}>
         Add User
       </Button>
+      {error && <Error errorMessage={error.message} />}
       {isShowing && (
         <Modal>
           <ModalContent toggle={handleCloseModal}>

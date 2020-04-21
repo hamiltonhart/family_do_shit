@@ -35,6 +35,12 @@ function reducer(state, action) {
         editIsShowing: false,
         changePasswordIsShowing: true,
       };
+    default:
+      return {
+        detailIsShowing: true,
+        editIsShowing: false,
+        changePasswordIsShowing: false,
+      };
   }
 }
 

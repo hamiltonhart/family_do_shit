@@ -18,7 +18,9 @@ import { PrimaryLayout, Loading, Error } from "./components/Global";
 export const CurrentUserContext = React.createContext();
 
 function App() {
-  const { data, loading, error } = useQuery(ME_QUERY);
+  const { data, loading, error } = useQuery(ME_QUERY, {
+    fetchPolicy: "network-only",
+  });
 
   let userContext = {};
   if (data) {

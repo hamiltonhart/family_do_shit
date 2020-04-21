@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 
 import { useMutation } from "@apollo/react-hooks";
-import { UPDATE_USER, GET_USERS } from "../../gql";
+import { UPDATE_USER } from "../../gql";
 
-import {
-  makeStyles,
-  Button,
-  Typography,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-} from "@material-ui/core";
+import { makeStyles, Button, Typography, TextField } from "@material-ui/core";
 
 import { Error } from "../Global";
 
@@ -57,6 +50,7 @@ export const AdminUserChangePassword = ({ user, dispatch }) => {
       <Typography align="center" variant="h5">
         {`Edit ${user.username}`}
       </Typography>
+      {error && <Error errorMessage={error.message} />}
       <form className={classes.form} onSubmit={(e) => handleSubmit(e)}>
         <TextField
           type="password"
