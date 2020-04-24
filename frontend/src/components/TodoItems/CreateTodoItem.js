@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 
-import { makeStyles, Button, Paper, TextField } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Paper,
+  TextField,
+  IconButton,
+} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_TODO_ITEM, GET_TODO_LIST } from "../../gql";
@@ -15,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
     },
+  },
+  createButton: { display: "flex", flexDirection: "flex-start" },
+  iconButton: {
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
@@ -42,16 +54,23 @@ export const CreateTodoItem = ({ todoListId, createButtonShowing }) => {
   return (
     <>
       {error && <Error errorMessage={error.message} />}
-      {createButtonShowing && (
-        <Button
-          size="medium"
-          color={isShowing ? "secondary" : "primary"}
-          variant={isShowing ? "outlined" : "contained"}
-          fullWidth
-          onClick={toggle}
-        >
-          {isShowing ? "Close" : "Add Item"}
-        </Button>
+      {createButtonShowing && !isShowing ? (
+        <div className={classes.createButton}>
+          <IconButton
+            className={classes.iconButton}
+            variant="contained"
+            fullWidth
+            onClick={toggle}
+          >
+            <AddIcon />
+          </IconButton>
+        </div>
+      ) : (
+        <div className={classes.createButton}>
+          <IconButton variant="contained" fullWidth onClick={toggle}>
+            <CloseIcon />
+          </IconButton>
+        </div>
       )}
       {isShowing && (
         <Paper variant="outlined">

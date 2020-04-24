@@ -7,6 +7,9 @@ import { GET_TODO_LIST } from "../../gql/TodoListGQL";
 
 import { Error } from "../Global";
 import { DeleteTodoItem } from "./DeleteTodoItem";
+import { EditTodoItem } from "./EditTodoItem";
+
+import { useToggle } from "../../utilities";
 
 import {
   makeStyles,
@@ -22,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     marginTop: theme.spacing(1),
+    cursor: "pointer",
   },
   paperDiv: {
     display: "flex",
@@ -37,15 +41,23 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grey[500],
     fontSize: ".85em",
   },
+  showActions: {
+    opacity: 1,
+  },
+  hideActions: {
+    opacity: 0,
+  },
 }));
 
 export const TodoItem = ({ todoItem }) => {
   const params = useParams();
+  const { isShowing, toggle } = useToggle();
   const [markTodoItemCompleteIncomplete, { error }] = useMutation(
     MARK_TODO_ITEM_COMPLETE_INCOMPLETE
   );
 
-  const handleCheck = () => {
+  const handleCheck = (e) => {
+    e.stopPropagation();
     markTodoItemCompleteIncomplete({
       variables: { id: todoItem.id },
       refetchQueries: [{ query: GET_TODO_LIST, variables: { id: params.id } }],
@@ -60,18 +72,24 @@ export const TodoItem = ({ todoItem }) => {
         <span>
           <Checkbox
             color="primary"
-            onChange={handleCheck}
+            onChange={(e) => handleCheck(e)}
             checked={todoItem.isCompleted}
           />
           <Typography
             className={todoItem.isCompleted ? classes.completed : ""}
             variant="body1"
             display="inline"
+            fullWidth
+            onClick={toggle}
           >
             {todoItem.itemName}
           </Typography>
         </span>
-        <CardActions>
+
+        <CardActions
+          className={isShowing ? classes.showActions : classes.hideActions}
+        >
+          <EditTodoItem todoItem={todoItem} />
           <DeleteTodoItem id={todoItem.id} todoListId={params.id} />
         </CardActions>
       </div>

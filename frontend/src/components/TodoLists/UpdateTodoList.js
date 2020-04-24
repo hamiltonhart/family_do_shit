@@ -75,7 +75,7 @@ export const UpdateTodoList = ({ title, toggleCreateButton }) => {
           <Typography variant="h5" className={classes.title} gutterBottom>
             {title}
           </Typography>
-          <IconButton color="secondary" onClick={handleEditClick}>
+          <IconButton onClick={handleEditClick}>
             <EditIcon />
           </IconButton>
         </div>

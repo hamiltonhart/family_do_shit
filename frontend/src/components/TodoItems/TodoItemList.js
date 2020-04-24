@@ -34,7 +34,7 @@ export const TodoItemList = ({ todoItems }) => {
       </Grid>
       <Grid container>
         <Grid item xs={12} className={classes.showCompleted}>
-          <Button color="secondary" onClick={toggle}>
+          <Button onClick={toggle}>
             {isShowing ? "Hide Completed" : "Show Completed"}
           </Button>
         </Grid>

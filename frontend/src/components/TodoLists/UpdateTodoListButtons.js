@@ -7,7 +7,7 @@ export const UpdateTodoListButtons = ({ toggle }) => {
   const [deleteActive, setDeleteActive] = useState(false);
 
   return (
-    <Grid container>
+    <Grid container spacing={1}>
       <Grid item xs={6}>
         <DeleteTodoList isActive={deleteActive} setIsActive={setDeleteActive} />
       </Grid>
