@@ -7,7 +7,7 @@ from todo_lists.models import TodoList
 
 
 class TodoItem(models.Model):
-    item_name = models.CharField(max_length=100)
+    item_name = models.CharField(max_length=500)
     todo_list = models.ForeignKey(
         TodoList, on_delete=models.CASCADE, related_name="todo_items")
     item_worth = models.IntegerField(default=1)

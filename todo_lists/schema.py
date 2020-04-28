@@ -34,13 +34,15 @@ class CreateTodoList(graphene.Mutation):
 
     class Arguments:
         title = graphene.String(required=True)
+        calculate_worth = graphene.Boolean()
 
     @login_required
-    def mutate(self, info, title):
+    def mutate(self, info, title, calculate_worth=False):
         user = info.context.user
         if user.is_anonymous:
             raise GraphQLError("Login to create a Todo List.")
-        todo_list = TodoList(title=title, created_by=user)
+        todo_list = TodoList(title=title, created_by=user,
+                             calculate_worth=calculate_worth)
         todo_list.save()
         return CreateTodoList(todo_list=todo_list)
 
@@ -51,15 +53,19 @@ class UpdateTodoList(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         title = graphene.String(required=True)
+        calculate_worth = graphene.Boolean()
 
     @login_required
-    def mutate(self, info, id, title):
+    def mutate(self, info, id, title, calculate_worth=None):
         try:
             todo_list = TodoList.objects.get(id=id)
         except:
             raise GraphQLError("A valid Todo List ID was not provided.")
 
         todo_list.title = title
+
+        if calculate_worth:
+            todo_list.calculate_worth = calculate_worth
 
         todo_list.save()
         return UpdateTodoList(todo_list=todo_list)
