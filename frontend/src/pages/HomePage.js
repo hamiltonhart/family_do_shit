@@ -3,12 +3,13 @@ import React, { useContext } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_TODO_LISTS } from "../gql/TodoListGQL";
 
-import { makeStyles, Grid, Typography } from "@material-ui/core";
+import { makeStyles, Grid, Typography, Button } from "@material-ui/core";
 
 import { TodoListsList, CreateTodoList } from "../components/TodoLists";
 import { CurrentUserContext } from "../App";
 
 import { Error, Loading } from "../components/Global";
+import { useToggle } from "../utilities";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const HomePage = () => {
+  const { isShowing, toggle } = useToggle();
   const { data, loading, error } = useQuery(GET_TODO_LISTS);
 
   const userContext = useContext(CurrentUserContext);
@@ -28,18 +30,30 @@ export const HomePage = () => {
       <Typography variant="h4" align="center" gutterBottom>
         {userContext.username}
       </Typography>
-      {loading && <Loading />}
       {error && <Error errorMessage={error.message} />}
-      {data && (
-        <Grid container>
-          <Grid item xs={12}>
-            <CreateTodoList />
-          </Grid>
-          <Grid item xs={12}>
-            <TodoListsList todoLists={data.todoLists} />
-          </Grid>
+
+      <Grid container>
+        <Grid item xs={12}>
+          <Button
+            size="medium"
+            color="primary"
+            variant="contained"
+            fullWidth
+            onClick={toggle}
+          >
+            Create List
+          </Button>
         </Grid>
-      )}
+        {data && (
+          <>
+            {loading && <Loading />}
+            <Grid item xs={12}>
+              <TodoListsList todoLists={data.todoLists} />
+            </Grid>
+          </>
+        )}
+      </Grid>
+      {isShowing && <CreateTodoList modalToggle={toggle} />}
     </div>
   );
 };

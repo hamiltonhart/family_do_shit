@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 
-import { makeStyles, Button, Paper, TextField } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_TODO_LIST, GET_TODO_LISTS } from "../../gql";
 
 import { useToggle } from "../../utilities";
 import { Error } from "../Global";
+import { Modal, ModalContent } from "../Global/Modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(1),
     marginBottom: theme.spacing(2),
   },
   form: {
-    padding: theme.spacing(2),
     "& > *": {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
@@ -22,8 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const CreateTodoList = () => {
-  const { isShowing, toggle } = useToggle();
+export const CreateTodoList = ({ modalToggle }) => {
   const [newListName, setNewListName] = useState("");
 
   const [createTodoList, { error }] = useMutation(CREATE_TODO_LIST);
@@ -39,30 +43,25 @@ export const CreateTodoList = () => {
 
   const handleComplete = () => {
     setNewListName("");
-    toggle();
+    modalToggle();
   };
 
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      {error && <Error errorMessage={error.message} />}
-      <Button
-        size="medium"
-        color={isShowing ? "secondary" : "primary"}
-        variant={isShowing ? "outlined" : "contained"}
-        fullWidth
-        onClick={toggle}
-      >
-        {isShowing ? "Close" : "Create List"}
-      </Button>
-      {isShowing && (
-        <Paper variant="outlined">
+    <Modal>
+      <ModalContent toggle={modalToggle}>
+        <div className={classes.root}>
+          {error && <Error errorMessage={error.message} />}
+          <Typography variant="h5" align="center">
+            New List
+          </Typography>
           <form className={classes.form} onSubmit={(e) => handleSubmit(e)}>
             <TextField
               color="primary"
               variant="outlined"
               label="List Name"
               fullWidth
+              autoFocus
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
             />
@@ -76,8 +75,8 @@ export const CreateTodoList = () => {
               Create
             </Button>
           </form>
-        </Paper>
-      )}
-    </div>
+        </div>
+      </ModalContent>
+    </Modal>
   );
 };
