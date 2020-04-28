@@ -3,22 +3,13 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_TODO_ITEM } from "../../gql";
 
-import {
-  IconButton,
-  TextField,
-  Button,
-  Typography,
-  Grid,
-} from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
+import { TextField, Button, Typography, Grid } from "@material-ui/core";
 
 import { Error } from "../Global";
 import { Modal, ModalContent } from "../Global/Modal";
-import { useToggle } from "../../utilities";
 
-export const EditTodoItem = ({ todoItem, todoListId, toggleEditButtons }) => {
+export const EditTodoItem = ({ todoItem, toggleEditModal }) => {
   const [itemName, setItemName] = useState(todoItem.itemName);
-  const { isShowing, toggle } = useToggle();
   const [updateTodoItem, { error }] = useMutation(UPDATE_TODO_ITEM);
 
   const handleSubmit = (e) => {
@@ -32,22 +23,20 @@ export const EditTodoItem = ({ todoItem, todoListId, toggleEditButtons }) => {
   const handleToggleClose = (e) => {
     e.stopPropagation();
     setItemName(todoItem.itemName);
-    toggle();
+    toggleEditModal();
   };
 
   const handleCompleted = () => {
-    toggleEditButtons();
-    toggle();
+    toggleEditModal();
   };
 
   return (
     <>
-      {error && <Error errorMessage={error.message} />}
-      <IconButton onClick={toggle}>
-        <EditIcon />
-      </IconButton>
-      {isShowing && (
+      {error ? (
+        <Error errorMessage={error.message} />
+      ) : (
         <Modal>
+          {console.log("here is the modal")}
           <ModalContent toggle={(e) => handleToggleClose(e)}>
             <Typography variant="h5" align="center">
               Edit Item
