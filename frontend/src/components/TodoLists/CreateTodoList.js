@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 
-import {
-  makeStyles,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles, Button, TextField, Typography } from "@material-ui/core";
 
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_TODO_LIST, GET_TODO_LISTS } from "../../gql";
 
-import { useToggle } from "../../utilities";
 import { Error } from "../Global";
 import { Modal, ModalContent } from "../Global/Modal";
 
@@ -72,7 +65,7 @@ export const CreateTodoList = ({ modalToggle }) => {
               fullWidth
               variant="contained"
             >
-              Create
+              Make List
             </Button>
           </form>
         </div>

@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_TODO_ITEM } from "../../gql";
 
 import {
-  makeStyles,
   IconButton,
   TextField,
   Button,
@@ -16,8 +15,6 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Error } from "../Global";
 import { Modal, ModalContent } from "../Global/Modal";
 import { useToggle } from "../../utilities";
-
-const useStyles = makeStyles((theme) => ({}));
 
 export const EditTodoItem = ({ todoItem, todoListId, toggleEditButtons }) => {
   const [itemName, setItemName] = useState(todoItem.itemName);

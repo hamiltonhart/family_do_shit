@@ -6,16 +6,12 @@ import { UPDATE_TODO_LIST } from "../../gql/TodoListGQL";
 
 import {
   makeStyles,
-  Typography,
   TextField,
   ClickAwayListener,
   Button,
   Grid,
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DoneIcon from "@material-ui/icons/Done";
 
-import { useToggle } from "../../utilities";
 import { Error } from "../Global";
 import { UpdateTodoListButtons } from "./UpdateTodoListButtons";
 import { Modal, ModalContent } from "../Global/Modal";

@@ -79,7 +79,6 @@ export const TodoItem = ({ todoItem, toggleEditButtons }) => {
             className={todoItem.isCompleted ? classes.completed : ""}
             variant="body1"
             display="inline"
-            fullWidth
             onClick={toggle}
           >
             {todoItem.itemName}

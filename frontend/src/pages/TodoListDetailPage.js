@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 export const TodoListDetailPage = () => {
   const params = useParams();
   const { isShowing: isShowingListEdit, toggle: toggleListEdit } = useToggle();
-  const { isShowing: isShowingItemEdit, toggle: toggleItemEdit } = useToggle();
   const {
     isShowing: isShowingListEditButton,
     toggle: toggleListEditButton,
