@@ -4,11 +4,14 @@ import { useParams } from "@reach/router";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_TODO_LIST } from "../gql/TodoListGQL";
 
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography, IconButton } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 
+import { useToggle } from "../utilities";
 import { Loading, Error } from "../components/Global";
-import { TodoListActions } from "../components/TodoLists";
+import { CreateTodoItem } from "../components/TodoItems";
 import { TodoItemList } from "../components/TodoItems";
+import { UpdateTodoList } from "../components/TodoLists";
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -18,8 +21,14 @@ const useStyles = makeStyles((theme) => ({
   headingContainer: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "baseline",
-    marginBottom: theme.spacing(3),
+    alignItems: "center",
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    minHeight: "55px",
+    "& h5": {
+      cursor: "pointer",
+    },
   },
   title: {
     textTransform: "uppercase",
@@ -28,10 +37,20 @@ const useStyles = makeStyles((theme) => ({
 
 export const TodoListDetailPage = () => {
   const params = useParams();
+  const { isShowing: isShowingListEdit, toggle: toggleListEdit } = useToggle();
+  const { isShowing: isShowingItemEdit, toggle: toggleItemEdit } = useToggle();
+  const {
+    isShowing: isShowingListEditButton,
+    toggle: toggleListEditButton,
+  } = useToggle();
 
   const { data, loading, error } = useQuery(GET_TODO_LIST, {
     variables: { id: params.id },
   });
+
+  const handleListEditOpen = () => {
+    toggleListEdit();
+  };
 
   const classes = useStyles();
   return (
@@ -39,10 +58,34 @@ export const TodoListDetailPage = () => {
       {loading && <Loading />}
       {error && <Error errorMessage={error.message} />}
       {data && (
-        <div className={classes.listContainer}>
-          <TodoListActions title={data.todoList.title} todoListId={params.id} />
-          <TodoItemList todoItems={data.todoList.todoItems} />
-        </div>
+        <>
+          <div className={classes.headingContainer}>
+            <Typography
+              variant="h5"
+              className={classes.title}
+              gutterBottom
+              onClick={toggleListEditButton}
+            >
+              {data.todoList.title}
+            </Typography>
+            {isShowingListEditButton && (
+              <IconButton onClick={() => handleListEditOpen()}>
+                <EditIcon />
+              </IconButton>
+            )}
+          </div>
+          <div className={classes.listContainer}>
+            <CreateTodoItem todoListId={data.todoList.id} />
+            <TodoItemList todoItems={data.todoList.todoItems} />
+          </div>
+          {isShowingListEdit && (
+            <UpdateTodoList
+              title={data.todoList.title}
+              toggle={toggleListEdit}
+              toggleEditButton={toggleListEditButton}
+            />
+          )}
+        </>
       )}
     </div>
   );

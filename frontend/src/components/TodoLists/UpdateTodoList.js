@@ -9,7 +9,8 @@ import {
   Typography,
   TextField,
   ClickAwayListener,
-  IconButton,
+  Button,
+  Grid,
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DoneIcon from "@material-ui/icons/Done";
@@ -17,6 +18,7 @@ import DoneIcon from "@material-ui/icons/Done";
 import { useToggle } from "../../utilities";
 import { Error } from "../Global";
 import { UpdateTodoListButtons } from "./UpdateTodoListButtons";
+import { Modal, ModalContent } from "../Global/Modal";
 
 const useStyles = makeStyles((theme) => ({
   headingContainer: {
@@ -41,10 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const UpdateTodoList = ({ title, toggleCreateButton }) => {
+export const UpdateTodoList = ({ title, toggle, toggleEditButton }) => {
   const params = useParams();
   const [newTitle, setNewTitle] = useState(title);
-  const { isShowing: isShowingEdit, toggle: toggleEdit } = useToggle();
 
   const [updateTodoList, { error }] = useMutation(UPDATE_TODO_LIST);
 
@@ -52,62 +53,63 @@ export const UpdateTodoList = ({ title, toggleCreateButton }) => {
     e.preventDefault();
     updateTodoList({
       variables: { id: params.id, title: newTitle },
-      onCompleted: handleEditClick(),
+      onCompleted: handleEditClose(),
     });
   };
 
   const handleClickAway = () => {
     setNewTitle(title);
-    handleEditClick();
+    handleEditClose();
   };
 
-  const handleEditClick = () => {
-    toggleEdit();
-    toggleCreateButton();
+  const handleEditClose = () => {
+    setNewTitle(title);
+    toggleEditButton();
+    toggle();
   };
 
   const classes = useStyles();
   return (
     <>
       {error && <Error errorMessage={error.message} />}
-      {!isShowingEdit && (
-        <div className={classes.headingContainer}>
-          <Typography variant="h5" className={classes.title} gutterBottom>
-            {title}
-          </Typography>
-          <IconButton onClick={handleEditClick}>
-            <EditIcon />
-          </IconButton>
-        </div>
-      )}
-      {isShowingEdit && (
+      <Modal>
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div className={classes.formContainer}>
-            <form
-              className={classes.headingContainer}
-              onSubmit={(e) => handleSubmit(e)}
-            >
-              <TextField
-                className="textInput"
-                color="secondary"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                fullWidth
-                autoFocus
-              />
-
-              <IconButton
-                className={classes.submit}
-                color="secondary"
-                type="submit"
+          <ModalContent toggle={() => handleEditClose()}>
+            <div className={classes.formContainer}>
+              <form
+                className={classes.headingContainer}
+                onSubmit={(e) => handleSubmit(e)}
               >
-                <DoneIcon />
-              </IconButton>
-            </form>
-            <UpdateTodoListButtons toggle={handleEditClick} />
-          </div>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TextField
+                      className="textInput"
+                      color="primary"
+                      variant="outlined"
+                      label="List Name"
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      fullWidth
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      color="primary"
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                    >
+                      Update
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+              <UpdateTodoListButtons toggle={handleEditClose} />
+            </div>
+          </ModalContent>
         </ClickAwayListener>
-      )}
+      </Modal>
     </>
   );
 };

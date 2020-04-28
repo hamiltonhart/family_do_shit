@@ -19,7 +19,7 @@ import { useToggle } from "../../utilities";
 
 const useStyles = makeStyles((theme) => ({}));
 
-export const EditTodoItem = ({ todoItem, todoListId }) => {
+export const EditTodoItem = ({ todoItem, todoListId, toggleEditButtons }) => {
   const [itemName, setItemName] = useState(todoItem.itemName);
   const { isShowing, toggle } = useToggle();
   const [updateTodoItem, { error }] = useMutation(UPDATE_TODO_ITEM);
@@ -28,13 +28,18 @@ export const EditTodoItem = ({ todoItem, todoListId }) => {
     e.preventDefault();
     updateTodoItem({
       variables: { id: todoItem.id, itemName },
-      onCompleted: toggle(),
+      onCompleted: handleCompleted(),
     });
   };
 
   const handleToggleClose = (e) => {
     e.stopPropagation();
     setItemName(todoItem.itemName);
+    toggle();
+  };
+
+  const handleCompleted = () => {
+    toggleEditButtons();
     toggle();
   };
 

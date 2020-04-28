@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TodoItem = ({ todoItem }) => {
+export const TodoItem = ({ todoItem, toggleEditButtons }) => {
   const params = useParams();
   const { isShowing, toggle } = useToggle();
   const [markTodoItemCompleteIncomplete, { error }] = useMutation(
@@ -89,7 +89,7 @@ export const TodoItem = ({ todoItem }) => {
         <CardActions
           className={isShowing ? classes.showActions : classes.hideActions}
         >
-          <EditTodoItem todoItem={todoItem} />
+          <EditTodoItem todoItem={todoItem} toggleEditButtons={toggle} />
           <DeleteTodoItem id={todoItem.id} todoListId={params.id} />
         </CardActions>
       </div>

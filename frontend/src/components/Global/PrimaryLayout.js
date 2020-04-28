@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0),
     borderRadius: 0,
     width: "100%",
-    height: "100vh",
+    minHeight: "100vh",
   },
   header: {
     display: "flex",

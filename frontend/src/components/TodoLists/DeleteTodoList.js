@@ -30,7 +30,7 @@ export const DeleteTodoList = ({ isActive, setIsActive }) => {
       {isActive ? (
         <ClickAwayListener onClickAway={() => setIsActive(!isActive)}>
           <Button
-            type="medium"
+            variant="medium"
             variant="contained"
             color="secondary"
             fullWidth
@@ -41,7 +41,7 @@ export const DeleteTodoList = ({ isActive, setIsActive }) => {
         </ClickAwayListener>
       ) : (
         <Button
-          type="medium"
+          variant="medium"
           variant="outlined"
           fullWidth
           onClick={(e) => setIsActive(!isActive)}
