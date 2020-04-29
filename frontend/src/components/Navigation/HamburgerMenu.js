@@ -9,6 +9,8 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
+import { useTransition, animated } from "react-spring";
+
 import { useToggle } from "../../utilities";
 import { HamburgerMenuItemList } from "./HamburgerMenuItemList";
 import { Logout } from "../Auth";
@@ -49,26 +51,43 @@ const useStyles = makeStyles((theme) => ({
 export const HamburgerMenu = () => {
   const { isShowing, toggle } = useToggle();
 
+  const transitions = useTransition(isShowing, null, {
+    from: {
+      position: "absolute",
+      transform: "translate3d(500px, 0, 0)",
+      top: 0,
+      right: 0,
+      zIndex: 100,
+    },
+    enter: { transform: "translate3d(0, 0, 0)" },
+    leave: { transform: "translate3d(500px, 0, 0)" },
+  });
+
   const classes = useStyles();
   return (
     <div>
       <IconButton onClick={toggle}>
         <MenuIcon className={classes.menuIcon} />
       </IconButton>
-      {isShowing && (
-        <ClickAwayListener onClickAway={toggle}>
-          <Paper className={classes.menuWrapper}>
-            <div className={classes.menuWrapperTopActions}>
-              <IconButton onClick={toggle}>
-                <ArrowForwardIosIcon />
-              </IconButton>
-            </div>
-            <HamburgerMenuItemList toggle={toggle} />
-            <div className={classes.logout}>
-              <Logout />
-            </div>
-          </Paper>
-        </ClickAwayListener>
+      {transitions.map(
+        ({ item, key, props }) =>
+          item && (
+            <ClickAwayListener onClickAway={toggle} key={key}>
+              <animated.div style={props}>
+                <Paper className={classes.menuWrapper}>
+                  <div className={classes.menuWrapperTopActions}>
+                    <IconButton onClick={toggle}>
+                      <ArrowForwardIosIcon />
+                    </IconButton>
+                  </div>
+                  <HamburgerMenuItemList toggle={toggle} />
+                  <div className={classes.logout}>
+                    <Logout />
+                  </div>
+                </Paper>
+              </animated.div>
+            </ClickAwayListener>
+          )
       )}
     </div>
   );
