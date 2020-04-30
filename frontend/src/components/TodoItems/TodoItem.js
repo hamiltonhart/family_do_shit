@@ -5,6 +5,8 @@ import { useMutation } from "@apollo/react-hooks";
 import { MARK_TODO_ITEM_COMPLETE_INCOMPLETE } from "../../gql/TodoItemGQL";
 import { GET_TODO_LIST } from "../../gql/TodoListGQL";
 
+import { useTransition, animated } from "react-spring";
+
 import { Error } from "../Global";
 import { DeleteTodoItem } from "./DeleteTodoItem";
 
@@ -58,15 +60,6 @@ const useStyles = makeStyles((theme) => ({
   completedByWrapper: {
     width: "100%",
   },
-  showActions: {
-    opacity: 1,
-    backgroundColor: theme.palette.primary.main,
-    position: "absolute",
-    right: -8,
-    borderRadius: "0 3px 3px 0",
-    height: "100%",
-    zIndex: 1,
-  },
 }));
 
 export const TodoItem = ({ todoItem }) => {
@@ -82,6 +75,29 @@ export const TodoItem = ({ todoItem }) => {
   const [markTodoItemCompleteIncomplete, { error }] = useMutation(
     MARK_TODO_ITEM_COMPLETE_INCOMPLETE
   );
+
+  const transitions = useTransition(isShowingEditButtons, null, {
+    from: {
+      position: "absolute",
+      display: "flex",
+      right: -8,
+      zIndex: 1,
+      height: "calc(100% + 16px)",
+      backgroundColor: "#69a4ff",
+      borderRadius: "0 3px 3px 0",
+      opacity: 0,
+      transform: "scale3d(0, 1, 1)",
+      transformOrigin: "right",
+    },
+    enter: {
+      opacity: 1,
+      transform: "scale3d(1, 1, 1)",
+    },
+    leave: {
+      opacity: 0,
+      transform: "translate3d(0, 1, 1)",
+    },
+  });
 
   const handleCheck = (e) => {
     e.stopPropagation();
@@ -129,18 +145,29 @@ export const TodoItem = ({ todoItem }) => {
               </Typography>
             </div>
 
-            {isShowingEditButtons && (
-              <CardActions className={classes.showActions}>
-                <IconButton onClick={(e) => handleOpenEditModal(e)}>
-                  <EditIcon />
-                </IconButton>
-                <DeleteTodoItem id={todoItem.id} todoListId={params.id} />
-              </CardActions>
+            {transitions.map(
+              ({ item, key, props }) =>
+                item && (
+                  <animated.div
+                    key={key}
+                    style={props}
+                    className={classes.showActions}
+                  >
+                    <CardActions>
+                      <IconButton onClick={(e) => handleOpenEditModal(e)}>
+                        <EditIcon />
+                      </IconButton>
+                      <DeleteTodoItem id={todoItem.id} todoListId={params.id} />
+                    </CardActions>
+                  </animated.div>
+                )
             )}
+
             {isShowingEditModal && (
               <EditTodoItem
                 toggleEditModal={toggleEditModal}
                 todoItem={todoItem}
+                isShowingEditModal={isShowingEditModal}
               />
             )}
           </div>
