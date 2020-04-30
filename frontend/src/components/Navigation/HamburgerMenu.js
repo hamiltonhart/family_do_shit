@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  makeStyles,
-  IconButton,
-  Paper,
-  ClickAwayListener,
-} from "@material-ui/core";
+import { makeStyles, IconButton, Paper } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
@@ -31,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "250px",
     maxWidth: "300px",
     borderRadius: 0,
-    boxShadow: theme.shadows[4],
+    boxShadow: theme.shadows[10],
   },
   menuWrapperTopActions: {
     display: "flex",
@@ -63,30 +58,51 @@ export const HamburgerMenu = () => {
     leave: { transform: "translate3d(500px, 0, 0)" },
   });
 
+  const backgroundTransitions = useTransition(isShowing, null, {
+    from: {
+      position: "fixed",
+      zIndex: 99,
+      width: "100vw",
+      height: "100vh",
+      top: 0,
+      left: 0,
+      backgroundColor: "rgba(0, 0, 0, .5)",
+      opacity: 0,
+    },
+    enter: {
+      opacity: 1,
+    },
+    leave: {
+      opacity: 0,
+    },
+  });
+
   const classes = useStyles();
   return (
     <div>
       <IconButton onClick={toggle}>
         <MenuIcon className={classes.menuIcon} />
       </IconButton>
+      {backgroundTransitions.map(
+        ({ item, key, props }) =>
+          item && <animated.div key={key} style={props} />
+      )}
       {transitions.map(
         ({ item, key, props }) =>
           item && (
-            <ClickAwayListener onClickAway={toggle} key={key}>
-              <animated.div style={props}>
-                <Paper className={classes.menuWrapper}>
-                  <div className={classes.menuWrapperTopActions}>
-                    <IconButton onClick={toggle}>
-                      <ArrowForwardIosIcon />
-                    </IconButton>
-                  </div>
-                  <HamburgerMenuItemList toggle={toggle} />
-                  <div className={classes.logout}>
-                    <Logout />
-                  </div>
-                </Paper>
-              </animated.div>
-            </ClickAwayListener>
+            <animated.div key={key} style={props}>
+              <Paper className={classes.menuWrapper}>
+                <div className={classes.menuWrapperTopActions}>
+                  <IconButton onClick={toggle}>
+                    <ArrowForwardIosIcon />
+                  </IconButton>
+                </div>
+                <HamburgerMenuItemList toggle={toggle} />
+                <div className={classes.logout}>
+                  <Logout />
+                </div>
+              </Paper>
+            </animated.div>
           )
       )}
     </div>
