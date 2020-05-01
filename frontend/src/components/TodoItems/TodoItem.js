@@ -118,6 +118,8 @@ export const TodoItem = ({ todoItem }) => {
     }
   };
 
+  const today = new Date();
+
   const classes = useStyles();
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -173,10 +175,15 @@ export const TodoItem = ({ todoItem }) => {
           </div>
         </Paper>
         {todoItem.completedBy && (
-          <Typography
-            className={classes.completedBy}
-            align="center"
-          >{`Compeleted By: ${todoItem.completedBy.username}`}</Typography>
+          <>
+            {console.log(todoItem.completedDate.split("-"))}
+            <Typography className={classes.completedBy} align="center">{`${
+              todoItem.completedBy.username
+            } - ${todoItem.completedDate.split("-")[1]}/${
+              todoItem.completedDate.split("-")[2]
+            }/${todoItem.completedDate.split("-")[0]}
+            `}</Typography>
+          </>
         )}
       </div>
     </ClickAwayListener>
