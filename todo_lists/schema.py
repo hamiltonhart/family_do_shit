@@ -64,7 +64,7 @@ class UpdateTodoList(graphene.Mutation):
 
         todo_list.title = title
 
-        if calculate_worth:
+        if calculate_worth != None:
             todo_list.calculate_worth = calculate_worth
 
         todo_list.save()
