@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TodoItemList = ({ todoItems }) => {
+export const TodoItemList = ({ todoItems, calculateWorth }) => {
   const [completeItems, incompleteItems] = useSortCompleted(todoItems);
   const { isShowing, toggle } = useToggle();
 
@@ -28,7 +28,7 @@ export const TodoItemList = ({ todoItems }) => {
       <Grid container className={classes.incompleteList}>
         {incompleteItems.map((item) => (
           <Grid item key={item.id} xs={12}>
-            <TodoItem todoItem={item} />
+            <TodoItem todoItem={item} calculateWorth={calculateWorth} />
           </Grid>
         ))}
       </Grid>
@@ -42,7 +42,7 @@ export const TodoItemList = ({ todoItems }) => {
           <>
             {completeItems.map((item) => (
               <Grid item key={item.id} xs={12}>
-                <TodoItem todoItem={item} />
+                <TodoItem todoItem={item} calculateWorth={calculateWorth} />
               </Grid>
             ))}
           </>

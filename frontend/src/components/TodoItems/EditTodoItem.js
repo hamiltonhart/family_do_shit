@@ -72,7 +72,6 @@ export const EditTodoItem = ({
                             label="Item Name"
                             variant="outlined"
                             fullWidth
-                            autoFocus
                             InputLabelProps={{
                               shrink: true,
                             }}

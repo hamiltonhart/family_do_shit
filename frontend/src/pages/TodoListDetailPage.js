@@ -74,12 +74,19 @@ export const TodoListDetailPage = () => {
             )}
           </div>
           <div className={classes.listContainer}>
-            <CreateTodoItem todoListId={data.todoList.id} />
-            <TodoItemList todoItems={data.todoList.todoItems} />
+            <CreateTodoItem
+              todoListId={data.todoList.id}
+              calculateWorth={data.todoList.calculateWorth}
+            />
+            <TodoItemList
+              todoItems={data.todoList.todoItems}
+              calculateWorth={data.todoList.calculateWorth}
+            />
           </div>
           {isShowingListEdit && (
             <UpdateTodoList
               title={data.todoList.title}
+              calculateWorth={data.todoList.calculateWorth}
               toggle={toggleListEdit}
               toggleEditButton={toggleListEditButton}
             />

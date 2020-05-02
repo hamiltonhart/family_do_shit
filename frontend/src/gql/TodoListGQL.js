@@ -16,6 +16,7 @@ export const GET_TODO_LIST = gql`
     todoList(id: $id) {
       id
       title
+      calculateWorth
       todoItems {
         id
         itemName
@@ -34,22 +35,24 @@ export const GET_TODO_LIST = gql`
 // Mutations
 
 export const CREATE_TODO_LIST = gql`
-  mutation($title: String!) {
-    createTodoList(title: $title) {
+  mutation($title: String!, $calculateWorth: Boolean) {
+    createTodoList(title: $title, calculateWorth: $calculateWorth) {
       todoList {
         id
         title
+        calculateWorth
       }
     }
   }
 `;
 
 export const UPDATE_TODO_LIST = gql`
-  mutation($id: Int!, $title: String!) {
-    updateTodoList(id: $id, title: $title) {
+  mutation($id: Int!, $title: String!, $calculateWorth: Boolean) {
+    updateTodoList(id: $id, title: $title, calculateWorth: $calculateWorth) {
       todoList {
         id
         title
+        calculateWorth
       }
     }
   }

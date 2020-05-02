@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-import { makeStyles, Button, TextField, Typography } from "@material-ui/core";
+import {
+  makeStyles,
+  Button,
+  TextField,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 
 import { useMutation } from "@apollo/react-hooks";
 import { CREATE_TODO_LIST, GET_TODO_LISTS } from "../../gql";
@@ -22,13 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 export const CreateTodoList = ({ modalToggle }) => {
   const [newListName, setNewListName] = useState("");
+  const [calculateWorth, setCalculateWorth] = useState(false);
 
   const [createTodoList, { error }] = useMutation(CREATE_TODO_LIST);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     createTodoList({
-      variables: { title: newListName },
+      variables: { title: newListName, calculateWorth: calculateWorth },
       refetchQueries: [{ query: GET_TODO_LISTS }],
       onCompleted: handleComplete(),
     });
@@ -54,9 +62,18 @@ export const CreateTodoList = ({ modalToggle }) => {
               variant="outlined"
               label="List Name"
               fullWidth
-              autoFocus
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={calculateWorth}
+                  onChange={(e) => setCalculateWorth(!calculateWorth)}
+                  color="primary"
+                />
+              }
+              label="Include Item Worth"
             />
             <Button
               type="submit"

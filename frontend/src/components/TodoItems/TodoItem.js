@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TodoItem = ({ todoItem }) => {
+export const TodoItem = ({ todoItem, calculateWorth }) => {
   const params = useParams();
   const {
     isShowing: isShowingEditButtons,
@@ -118,8 +118,6 @@ export const TodoItem = ({ todoItem }) => {
     }
   };
 
-  const today = new Date();
-
   const classes = useStyles();
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -143,7 +141,9 @@ export const TodoItem = ({ todoItem }) => {
                 display="inline"
                 onClick={toggleEditButtons}
               >
-                {todoItem.itemName}
+                {calculateWorth
+                  ? `(${todoItem.itemWorth}) - ${todoItem.itemName}`
+                  : `${todoItem.itemName}`}
               </Typography>
             </div>
 
@@ -176,7 +176,6 @@ export const TodoItem = ({ todoItem }) => {
         </Paper>
         {todoItem.completedBy && (
           <>
-            {console.log(todoItem.completedDate.split("-"))}
             <Typography className={classes.completedBy} align="center">{`${
               todoItem.completedBy.username
             } - ${todoItem.completedDate.split("-")[1]}/${
