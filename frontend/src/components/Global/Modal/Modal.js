@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
   root: {
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     display: "flex",
