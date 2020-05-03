@@ -3,7 +3,15 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { UPDATE_TODO_ITEM } from "../../gql";
 
-import { TextField, Button, Typography, Grid } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  Typography,
+  Grid,
+  FormControl,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 
 import { useTransition, animated } from "react-spring";
 
@@ -12,16 +20,19 @@ import { Modal, ModalContent } from "../Global/Modal";
 
 export const EditTodoItem = ({
   todoItem,
+  calculateWorth,
   toggleEditModal,
   isShowingEditModal,
 }) => {
   const [itemName, setItemName] = useState(todoItem.itemName);
+  const [itemWorth, setItemWorth] = useState(todoItem.itemWorth);
+
   const [updateTodoItem, { error }] = useMutation(UPDATE_TODO_ITEM);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     updateTodoItem({
-      variables: { id: todoItem.id, itemName },
+      variables: { id: todoItem.id, itemName, itemWorth },
       onCompleted: handleCompleted(),
     });
   };
@@ -37,7 +48,7 @@ export const EditTodoItem = ({
     },
     leave: {
       opacity: 0,
-      transform: "translate3d(0, 40px, 0)",
+      transform: "translate3d(0, -40px, 0)",
     },
   });
 
@@ -67,7 +78,24 @@ export const EditTodoItem = ({
                     </Typography>
                     <form onSubmit={(e) => handleSubmit(e)}>
                       <Grid container spacing={2}>
-                        <Grid item xs={12}>
+                        {calculateWorth && (
+                          <Grid item xs={3}>
+                            <FormControl fullWidth variant="outlined">
+                              <Select
+                                id="item-worth-input"
+                                value={itemWorth}
+                                onChange={(e) => setItemWorth(e.target.value)}
+                              >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>5</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                        )}
+                        <Grid item xs={calculateWorth ? 9 : 12}>
                           <TextField
                             label="Item Name"
                             variant="outlined"

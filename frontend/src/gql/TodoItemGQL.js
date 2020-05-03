@@ -50,6 +50,7 @@ export const CREATE_TODO_ITEM = gql`
       todoItem {
         id
         itemName
+        itemWorth
         createdBy {
           username
         }
@@ -75,6 +76,7 @@ export const UPDATE_TODO_ITEM = gql`
       todoItem {
         id
         itemName
+        itemWorth
         createdBy {
           username
         }

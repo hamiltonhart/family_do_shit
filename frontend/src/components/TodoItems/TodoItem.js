@@ -168,6 +168,7 @@ export const TodoItem = ({ todoItem, calculateWorth }) => {
             {isShowingEditModal && (
               <EditTodoItem
                 toggleEditModal={toggleEditModal}
+                calculateWorth={calculateWorth}
                 todoItem={todoItem}
                 isShowingEditModal={isShowingEditModal}
               />
